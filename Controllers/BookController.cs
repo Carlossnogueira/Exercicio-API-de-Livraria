@@ -1,4 +1,5 @@
-﻿using Livraria.Communication.Requests;
+﻿using Livraria.Communication.Configuration;
+using Livraria.Communication.Requests;
 using Livraria.Model;
 using Livraria.Repository;
 using Microsoft.AspNetCore.Http;
@@ -48,5 +49,16 @@ namespace Livraria.Controllers
 
 
         //TODO Get book by ID
+        [HttpGet("/{id}")]
+        [ProducesResponseType(typeof(Book), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(string), StatusCodes.Status204NoContent)]
+        public IActionResult GetById([FromRoute] RequestBookByIdJson request){
+            if(request == null){
+                return NoContent();
+            }
+            
+            var bookResponse = BookRepository.books[request.id];
+            return Ok(bookResponse);
+        }
     }
 }
